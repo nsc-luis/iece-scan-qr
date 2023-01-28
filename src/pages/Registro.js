@@ -140,7 +140,6 @@ class Registro extends Component {
                         return false
                     }
                     else {
-                        console.log(res.data)
                         this.verQR(res.data.registro)
                     }
                 })
@@ -206,10 +205,11 @@ class Registro extends Component {
     }
     printQR = async () => {
         let pdf = jsPDF('l', 'in', [4, 3])
-        pdf.addImage(`${this.state.qrImage}`, 'png', 1.2, 0.5, 1.5, 1.5)
+        var width = pdf.internal.pageSize.getWidth()
+        pdf.addImage(`${this.state.qrImage}`, 'png', 1.2, 0.5, 1.5, 1.5, { align: 'center' })
         pdf.setFontSize(10)
-        pdf.text(`${this.state.currentRegistro.nombre} ${this.state.currentRegistro.apellidoPaterno}`, 1, 2)
-        pdf.text(`${this.state.currentRegistro.nombreCategoria} | ${this.state.currentRegistro.bautizado ? "Bautizado" : "Visitante"}`, 1.2, 2.2)
+        pdf.text(`${this.state.currentRegistro.nombre} ${this.state.currentRegistro.apellidoPaterno}`, width/2, 2, { align: 'center' })
+        pdf.text(`${this.state.currentRegistro.nombreCategoria} | ${this.state.currentRegistro.bautizado ? "Bautizado" : "Visitante"}`, width/2, 2.2, { align: 'center' })
         pdf.save(`${this.state.currentRegistro.nombre} ${this.state.currentRegistro.apellidoPaterno} ${this.state.currentRegistro.apellidoMaterno}.pdf`);
     }
     render() {
